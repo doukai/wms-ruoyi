@@ -2,6 +2,7 @@ package com.ruoyi.wms.domain.vo;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.mybatis.core.domain.BaseVo;
 import com.ruoyi.wms.domain.entity.MovementOrder;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -13,6 +14,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 
 import java.io.Serializable;
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -84,4 +86,20 @@ public class MovementOrderVo extends BaseVo{
     private String remark;
 
     List<MovementOrderDetailVo> details;
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal totalGrossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal totalNetWeight;
 }

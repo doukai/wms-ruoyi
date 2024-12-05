@@ -78,4 +78,14 @@ public class MovementOrderDetail extends BaseEntity {
      */
     private Long inventoryDetailId;
 
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
+
 }

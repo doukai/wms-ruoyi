@@ -2,6 +2,7 @@ package com.ruoyi.wms.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.mybatis.core.domain.BaseVo;
 import com.ruoyi.wms.domain.entity.ShipmentOrder;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -9,6 +10,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -92,4 +94,20 @@ public class ShipmentOrderVo extends BaseVo{
     private String remark;
 
     List<ShipmentOrderDetailVo> details;
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal totalGrossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal totalNetWeight;
 }

@@ -102,4 +102,14 @@ public class ShipmentOrderDetailVo implements Serializable, PlaceAndItem {
     private ItemSkuVo itemSku;
 
     private BigDecimal remainQuantity;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
 }

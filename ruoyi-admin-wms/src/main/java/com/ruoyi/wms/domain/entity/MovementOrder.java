@@ -1,6 +1,7 @@
 package com.ruoyi.wms.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -8,6 +9,7 @@ import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import java.math.BigDecimal;
 
 import java.io.Serial;
+import java.time.LocalDateTime;
 
 /**
  * 移库单对象 wms_movement_order
@@ -24,7 +26,7 @@ public class MovementOrder extends BaseEntity {
     private static final long serialVersionUID=1L;
 
     /**
-     * 
+     *
      */
     @TableId(value = "id")
     private Long id;
@@ -60,5 +62,21 @@ public class MovementOrder extends BaseEntity {
      * 备注
      */
     private String remark;
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal totalGrossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal totalNetWeight;
 
 }

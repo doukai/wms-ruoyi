@@ -69,4 +69,14 @@ public class ReceiptOrderDetail extends BaseEntity {
      * 所属库区
      */
     private Long areaId;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
 }

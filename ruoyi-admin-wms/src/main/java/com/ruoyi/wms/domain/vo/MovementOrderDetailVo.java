@@ -110,4 +110,14 @@ public class MovementOrderDetailVo implements Serializable {
     private InventoryDetailVo inventoryDetail;
 
     private BigDecimal remainQuantity;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
 }

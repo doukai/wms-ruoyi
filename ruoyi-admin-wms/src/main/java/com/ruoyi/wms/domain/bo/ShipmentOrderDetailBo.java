@@ -97,5 +97,15 @@ public class ShipmentOrderDetailBo extends BaseEntity implements PlaceAndItem {
      */
     private String remark;
 
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
+
 
 }

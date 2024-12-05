@@ -110,4 +110,14 @@ public class MovementOrderDetailBo extends BaseEntity implements PlaceAndItem {
     public Long getAreaId() {
         return this.getSourceAreaId();
     }
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
 }

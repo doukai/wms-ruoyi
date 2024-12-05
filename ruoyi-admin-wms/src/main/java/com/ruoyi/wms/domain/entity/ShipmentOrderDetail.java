@@ -74,4 +74,14 @@ public class ShipmentOrderDetail extends BaseEntity {
      */
     private String remark;
 
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
+
 }

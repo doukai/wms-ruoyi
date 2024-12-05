@@ -92,4 +92,14 @@ public class ReceiptOrderDetailVo implements Serializable {
     private Long areaId;
 
     private ItemSkuVo itemSku;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
 }
