@@ -114,4 +114,14 @@ public class InventoryHistoryVo implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
+
 }

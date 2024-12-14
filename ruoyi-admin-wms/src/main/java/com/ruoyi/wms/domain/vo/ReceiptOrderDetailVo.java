@@ -2,6 +2,7 @@ package com.ruoyi.wms.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import com.ruoyi.wms.domain.entity.ReceiptOrderDetail;
@@ -102,4 +103,11 @@ public class ReceiptOrderDetailVo implements Serializable {
      * 净重(kg)
      */
     private BigDecimal netWeight;
+
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
 }

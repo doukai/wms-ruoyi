@@ -48,7 +48,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
     /**
      * 查询库存
      */
-    public InventoryVo queryById(Long id){
+    public InventoryVo queryById(Long id) {
         return inventoryMapper.selectVoById(id);
     }
 
@@ -94,6 +94,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
 
     /**
      * 更新库存
+     *
      * @param list
      */
     @Transactional
@@ -110,10 +111,24 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
             wrapper.eq(Inventory::getAreaId, inventoryBo.getAreaId());
             wrapper.eq(Inventory::getSkuId, inventoryBo.getSkuId());
             Inventory result = inventoryMapper.selectOne(wrapper);
-            if(result!=null){
+            if (result != null) {
                 result.setQuantity(result.getQuantity().add(inventoryBo.getQuantity()));
+                if (inventoryBo.getGrossWeight() != null) {
+                    if (result.getGrossWeight() == null) {
+                        result.setGrossWeight(inventoryBo.getGrossWeight());
+                    } else {
+                        result.setGrossWeight(result.getGrossWeight().add(inventoryBo.getGrossWeight()));
+                    }
+                }
+                if (inventoryBo.getNetWeight() != null) {
+                    if (result.getNetWeight() == null) {
+                        result.setNetWeight(inventoryBo.getNetWeight());
+                    } else {
+                        result.setNetWeight(result.getNetWeight().add(inventoryBo.getNetWeight()));
+                    }
+                }
                 updateList.add(result);
-            }else {
+            } else {
                 Inventory inventory = MapstructUtils.convert(inventoryBo, Inventory.class);
                 addList.add(inventory);
             }
@@ -128,6 +143,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
 
     /**
      * 校验规格是否有库存
+     *
      * @param skuIds
      * @return
      */
@@ -139,6 +155,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
 
     /**
      * 校验该库区是否有库存
+     *
      * @param areaIds
      * @return
      */
@@ -149,18 +166,18 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
     }
 
     public TableDataInfo<InventoryVo> queryWarehouseBoardList(InventoryBo bo, PageQuery pageQuery) {
-            TableDataInfo<InventoryVo> tableDataInfo = TableDataInfo.build(inventoryMapper.selectBoardPageByWarehouse(pageQuery.build(), bo));
-            if (CollUtil.isEmpty(tableDataInfo.getRows())) {
-                return tableDataInfo;
-            }
-            Set<Long> skuIds = tableDataInfo.getRows().stream().map(InventoryVo::getSkuId).collect(Collectors.toSet());
-            Map<Long, ItemSkuVo> skuMap = itemSkuService.queryVosByIds(skuIds).stream().collect(Collectors.toMap(ItemSkuVo::getId, Function.identity()));
-            tableDataInfo.getRows().forEach(it -> {
-                ItemSkuVo itemSku = skuMap.get(it.getSkuId());
-                it.setItemSku(itemSku);
-                it.setItem(itemSku.getItem());
-            });
+        TableDataInfo<InventoryVo> tableDataInfo = TableDataInfo.build(inventoryMapper.selectBoardPageByWarehouse(pageQuery.build(), bo));
+        if (CollUtil.isEmpty(tableDataInfo.getRows())) {
             return tableDataInfo;
+        }
+        Set<Long> skuIds = tableDataInfo.getRows().stream().map(InventoryVo::getSkuId).collect(Collectors.toSet());
+        Map<Long, ItemSkuVo> skuMap = itemSkuService.queryVosByIds(skuIds).stream().collect(Collectors.toMap(ItemSkuVo::getId, Function.identity()));
+        tableDataInfo.getRows().forEach(it -> {
+            ItemSkuVo itemSku = skuMap.get(it.getSkuId());
+            it.setItemSku(itemSku);
+            it.setItem(itemSku.getItem());
+        });
+        return tableDataInfo;
     }
 
     /**

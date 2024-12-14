@@ -78,4 +78,14 @@ public class InventoryHistory extends BaseHistoryEntity {
      */
     private Long areaId;
 
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
+
 }

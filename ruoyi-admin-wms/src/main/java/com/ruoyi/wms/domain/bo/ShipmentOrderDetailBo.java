@@ -1,5 +1,6 @@
 package com.ruoyi.wms.domain.bo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.mybatis.core.domain.PlaceAndItem;
 import com.ruoyi.wms.domain.entity.ShipmentOrderDetail;
 import com.ruoyi.common.core.validate.AddGroup;
@@ -106,6 +107,13 @@ public class ShipmentOrderDetailBo extends BaseEntity implements PlaceAndItem {
      * 净重(kg)
      */
     private BigDecimal netWeight;
+
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
 
 
 }

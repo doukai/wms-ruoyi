@@ -1,6 +1,7 @@
 package com.ruoyi.wms.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -83,5 +84,12 @@ public class ShipmentOrderDetail extends BaseEntity {
      * 净重(kg)
      */
     private BigDecimal netWeight;
+
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
 
 }

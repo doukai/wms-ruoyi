@@ -2,6 +2,7 @@ package com.ruoyi.wms.domain.vo;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.mybatis.core.domain.PlaceAndItem;
 import com.ruoyi.wms.domain.entity.ShipmentOrderDetail;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -112,4 +113,11 @@ public class ShipmentOrderDetailVo implements Serializable, PlaceAndItem {
      * 净重(kg)
      */
     private BigDecimal netWeight;
+
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
 }

@@ -90,4 +90,24 @@ public class InventoryDetail extends BaseEntity implements PlaceAndItem {
      */
     private BigDecimal remainQuantity;
 
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
+
+    /**
+     * 剩余毛重(kg)
+     */
+    private BigDecimal remainGrossWeight;
+
+    /**
+     * 剩余净重(kg)
+     */
+    private BigDecimal remainNetWeight;
+
 }

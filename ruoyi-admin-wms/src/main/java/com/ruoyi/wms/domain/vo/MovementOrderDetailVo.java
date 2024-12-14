@@ -1,6 +1,8 @@
 package com.ruoyi.wms.domain.vo;
 
 import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.wms.domain.entity.MovementOrderDetail;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -120,4 +122,11 @@ public class MovementOrderDetailVo implements Serializable {
      * 净重(kg)
      */
     private BigDecimal netWeight;
+
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
 }

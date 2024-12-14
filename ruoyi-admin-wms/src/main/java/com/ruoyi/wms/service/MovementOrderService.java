@@ -136,6 +136,7 @@ public class MovementOrderService {
 
     /**
      * 删除移库单
+     *
      * @param id
      */
     public void deleteById(Long id) {
@@ -162,6 +163,7 @@ public class MovementOrderService {
 
     /**
      * 移库
+     *
      * @param bo
      */
     @Transactional
@@ -184,7 +186,11 @@ public class MovementOrderService {
         // 4.更新库存Inventory
         List<InventoryBo> mergedShipmentInventoryList = mergeShipmentDetailByPlaceAndItem(bo.getDetails());
         List<InventoryBo> mergedReceiptInventoryList = mergeReceiptDetailByPlaceAndItem(bo.getDetails());
-        mergedShipmentInventoryList.forEach(mergedShipmentInventory -> mergedShipmentInventory.setQuantity(mergedShipmentInventory.getQuantity().negate()));
+        mergedShipmentInventoryList.forEach(mergedShipmentInventory -> {
+            mergedShipmentInventory.setQuantity(mergedShipmentInventory.getQuantity().negate());
+            mergedShipmentInventory.setGrossWeight(mergedShipmentInventory.getGrossWeight().negate());
+            mergedShipmentInventory.setNetWeight(mergedShipmentInventory.getNetWeight().negate());
+        });
         inventoryService.updateInventoryQuantity(mergedShipmentInventoryList);
         inventoryService.updateInventoryQuantity(mergedReceiptInventoryList);
 
@@ -204,6 +210,7 @@ public class MovementOrderService {
 
     /**
      * 按仓库库区规格合并商品明细的数量
+     *
      * @param movementOrderDetailBoList
      */
     public List<InventoryBo> mergeShipmentDetailByPlaceAndItem(@NotEmpty List<MovementOrderDetailBo> movementOrderDetailBoList) {
@@ -213,12 +220,24 @@ public class MovementOrderService {
             if (mergedShipmentMap.containsKey(mergedShipmentKey)) {
                 InventoryBo mergedInventoryBo = mergedShipmentMap.get(mergedShipmentKey);
                 mergedInventoryBo.setQuantity(mergedInventoryBo.getQuantity().add(detail.getQuantity()));
+                if (detail.getGrossWeight() != null) {
+                    mergedInventoryBo.setGrossWeight(mergedInventoryBo.getGrossWeight().add(detail.getGrossWeight()));
+                }
+                if (detail.getNetWeight() != null) {
+                    mergedInventoryBo.setNetWeight(mergedInventoryBo.getNetWeight().add(detail.getNetWeight()));
+                }
             } else {
                 InventoryBo mergedInventoryBo = new InventoryBo();
                 mergedInventoryBo.setWarehouseId(detail.getSourceWarehouseId());
                 mergedInventoryBo.setAreaId(detail.getSourceAreaId());
                 mergedInventoryBo.setSkuId(detail.getSkuId());
                 mergedInventoryBo.setQuantity(detail.getQuantity());
+                if (detail.getGrossWeight() != null) {
+                    mergedInventoryBo.setGrossWeight(detail.getGrossWeight());
+                }
+                if (detail.getNetWeight() != null) {
+                    mergedInventoryBo.setNetWeight(detail.getNetWeight());
+                }
                 mergedShipmentMap.put(mergedShipmentKey, mergedInventoryBo);
             }
         });
@@ -228,6 +247,7 @@ public class MovementOrderService {
 
     /**
      * 按仓库库区规格合并商品明细的数量
+     *
      * @param movementOrderDetailBoList
      */
     public List<InventoryBo> mergeReceiptDetailByPlaceAndItem(@NotEmpty List<MovementOrderDetailBo> movementOrderDetailBoList) {
@@ -237,12 +257,24 @@ public class MovementOrderService {
             if (mergedReceiptMap.containsKey(mergedReceiptKey)) {
                 InventoryBo mergedInventoryBo = mergedReceiptMap.get(mergedReceiptKey);
                 mergedInventoryBo.setQuantity(mergedInventoryBo.getQuantity().add(detail.getQuantity()));
+                if (detail.getGrossWeight() != null) {
+                    mergedInventoryBo.setGrossWeight(mergedInventoryBo.getGrossWeight().add(detail.getGrossWeight()));
+                }
+                if (detail.getNetWeight() != null) {
+                    mergedInventoryBo.setNetWeight(mergedInventoryBo.getNetWeight().add(detail.getNetWeight()));
+                }
             } else {
                 InventoryBo mergedInventoryBo = new InventoryBo();
                 mergedInventoryBo.setWarehouseId(detail.getTargetWarehouseId());
                 mergedInventoryBo.setAreaId(detail.getTargetAreaId());
                 mergedInventoryBo.setSkuId(detail.getSkuId());
                 mergedInventoryBo.setQuantity(detail.getQuantity());
+                if (detail.getGrossWeight() != null) {
+                    mergedInventoryBo.setGrossWeight(detail.getGrossWeight());
+                }
+                if (detail.getNetWeight() != null) {
+                    mergedInventoryBo.setNetWeight(detail.getNetWeight());
+                }
                 mergedReceiptMap.put(mergedReceiptKey, mergedInventoryBo);
             }
         });
@@ -256,12 +288,15 @@ public class MovementOrderService {
                 InventoryDetailBo inventoryDetailBo = new InventoryDetailBo();
                 inventoryDetailBo.setId(detail.getInventoryDetailId());
                 inventoryDetailBo.setShipmentQuantity(detail.getQuantity());
+                inventoryDetailBo.setShipmentGrossWeight(detail.getGrossWeight());
+                inventoryDetailBo.setShipmentNetWeight(detail.getNetWeight());
                 return inventoryDetailBo;
             }).toList();
     }
 
     /**
      * 移库完成创建入库记录
+     *
      * @param bo
      */
     @Transactional
@@ -274,6 +309,8 @@ public class MovementOrderService {
             addInventoryDetail.setWarehouseId(it.getTargetWarehouseId());
             addInventoryDetail.setAreaId(it.getTargetAreaId());
             addInventoryDetail.setQuantity(it.getQuantity());
+            addInventoryDetail.setGrossWeight(it.getGrossWeight());
+            addInventoryDetail.setNetWeight(it.getNetWeight());
             addInventoryDetail.setBatchNo(it.getBatchNo());
             addInventoryDetail.setProductionDate(it.getProductionDate());
             addInventoryDetail.setExpirationDate(it.getExpirationDate());
@@ -285,6 +322,7 @@ public class MovementOrderService {
 
     /**
      * 移库完成创建库存记录
+     *
      * @param bo
      */
     @Transactional
@@ -296,6 +334,8 @@ public class MovementOrderService {
             shipmentInventoryHistory.setAreaId(detail.getSourceAreaId());
             shipmentInventoryHistory.setSkuId(detail.getSkuId());
             shipmentInventoryHistory.setQuantity(detail.getQuantity().negate());
+            shipmentInventoryHistory.setGrossWeight(detail.getGrossWeight().negate());
+            shipmentInventoryHistory.setNetWeight(detail.getNetWeight().negate());
             shipmentInventoryHistory.setBatchNo(detail.getBatchNo());
             shipmentInventoryHistory.setProductionDate(detail.getProductionDate());
             shipmentInventoryHistory.setExpirationDate(detail.getExpirationDate());
@@ -308,6 +348,8 @@ public class MovementOrderService {
             receiptInventoryHistory.setAreaId(detail.getTargetAreaId());
             receiptInventoryHistory.setSkuId(detail.getSkuId());
             receiptInventoryHistory.setQuantity(detail.getQuantity());
+            receiptInventoryHistory.setGrossWeight(detail.getGrossWeight());
+            receiptInventoryHistory.setNetWeight(detail.getNetWeight());
             receiptInventoryHistory.setBatchNo(detail.getBatchNo());
             receiptInventoryHistory.setProductionDate(detail.getProductionDate());
             receiptInventoryHistory.setExpirationDate(detail.getExpirationDate());

@@ -24,6 +24,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         end
         )
         ,
+        remain_gross_weight = remain_gross_weight -
+        (
+        case
+        <foreach collection="list" item="it">
+            when id = #{it.id} then IFNULL(#{it.shipmentGrossWeight}, 0)
+        </foreach>
+        end
+        )
+        ,
+        remain_net_weight = remain_net_weight -
+        (
+        case
+        <foreach collection="list" item="it">
+            when id = #{it.id} then IFNULL(#{it.shipmentNetWeight}, 0)
+        </foreach>
+        end
+        )
+        ,
         update_time = #{updateTime},
         update_by = #{updateBy}
         where id in
@@ -33,12 +51,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     <select id="selectPageByBo" resultMap="inventoryDetailVoMap">
         select
-        detail.*,
+        detail.id,
+        detail.receipt_order_id,
+        detail.receipt_order_type,
+        detail.order_no,
+        detail.`type`,
+        detail.sku_id,
+        detail.warehouse_id,
+        detail.area_id,
+        detail.quantity,
+        detail.batch_no,
+        detail.production_date,
+        detail.expiration_date,
+        detail.amount,
+        detail.remark,
+        detail.remain_quantity,
+        detail.create_by,
+        detail.create_time,
+        detail.update_by,
+        detail.update_time,
+        detail.remain_gross_weight,
+        detail.remain_net_weight,
         sku.id as sku_id,
         sku.*,
+        ro.time,
         item.id as item_id,
         item.*
         from wms_inventory_detail detail
+        left join wms_receipt_order ro on detail.receipt_order_id = ro.id
         inner join wms_item_sku sku on detail.sku_id=sku.id
         inner join wms_item     item on sku.item_id=item.id
         <where>
@@ -70,13 +110,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and detail.batch_no=#{bo.batchNo}
             </if>
             <if test="bo.createStartTime != null and bo.createEndTime != null">
-                and (detail.create_time between #{bo.createStartTime} and #{bo.createEndTime})
+                and (ro.time between #{bo.createStartTime} and #{bo.createEndTime})
             </if>
             <if test="bo.expirationStartTime != null and bo.expirationEndTime != null">
                 and (detail.expiration_date between #{bo.expirationStartTime} and #{bo.expirationEndTime})
             </if>
         </where>
-        order by detail.warehouse_id,detail.area_id,sku.item_id,sku.id,detail.create_time
+        order by detail.warehouse_id,detail.area_id,sku.item_id,sku.id,ro.time
     </select>
     <select id="selectListByBo" resultType="com.ruoyi.wms.domain.vo.InventoryDetailVo">
         select

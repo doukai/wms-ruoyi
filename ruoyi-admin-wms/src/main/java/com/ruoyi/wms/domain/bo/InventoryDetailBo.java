@@ -134,4 +134,34 @@ public class InventoryDetailBo extends BaseEntity implements PlaceAndItem {
     private LocalDateTime expirationStartTime;
     private LocalDateTime expirationEndTime;
 
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
+
+    /**
+     * 剩余毛重(kg)
+     */
+    private BigDecimal remainGrossWeight;
+
+    /**
+     * 剩余净重(kg)
+     */
+    private BigDecimal remainNetWeight;
+
+    /**
+     * 出库毛重(kg)
+     */
+    private BigDecimal shipmentGrossWeight;
+
+    /**
+     * 出库净重(kg)
+     */
+    private BigDecimal shipmentNetWeight;
+
 }

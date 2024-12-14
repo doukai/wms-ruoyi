@@ -45,6 +45,16 @@ public class Inventory extends BaseEntity implements PlaceAndItem {
      * 库存
      */
     private BigDecimal quantity;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
     /**
      * 备注
      */

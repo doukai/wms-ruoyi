@@ -107,4 +107,14 @@ public class InventoryHistoryBo extends BaseHistoryEntity {
     private String startTime;
     private String endTime;
 
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
+
 }

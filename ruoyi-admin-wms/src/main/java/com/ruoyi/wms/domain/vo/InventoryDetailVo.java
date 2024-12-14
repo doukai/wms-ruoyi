@@ -2,6 +2,7 @@ package com.ruoyi.wms.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.mybatis.core.domain.BaseVo;
 import com.ruoyi.wms.domain.entity.InventoryDetail;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -119,5 +120,41 @@ public class InventoryDetailVo extends BaseVo {
 
     private ItemVo item;
 
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal netWeight;
+
+    /**
+     * 剩余毛重(kg)
+     */
+    private BigDecimal remainGrossWeight;
+
+    /**
+     * 剩余净重(kg)
+     */
+    private BigDecimal remainNetWeight;
+
+    /**
+     * 毛重(kg)
+     */
+    private BigDecimal skuGrossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    private BigDecimal skuNetWeight;
 
 }

@@ -54,7 +54,7 @@ public class ReceiptOrderService {
     /**
      * 查询入库单
      */
-    public ReceiptOrderVo queryById(Long id){
+    public ReceiptOrderVo queryById(Long id) {
         ReceiptOrderVo receiptOrderVo = receiptOrderMapper.selectVoById(id);
         Assert.notNull(receiptOrderVo, "入库单不存在");
         receiptOrderVo.setDetails(receiptOrderDetailService.queryByReceiptOrderId(id));
@@ -148,7 +148,7 @@ public class ReceiptOrderService {
         }
     }
 
-    private void saveInventoryHistory(ReceiptOrderBo bo){
+    private void saveInventoryHistory(ReceiptOrderBo bo) {
         List<InventoryHistory> inventoryHistoryList = new LinkedList<>();
         bo.getDetails().forEach(detail -> {
             InventoryHistory inventoryHistory = new InventoryHistory();
@@ -157,6 +157,8 @@ public class ReceiptOrderService {
             inventoryHistory.setOrderType(ServiceConstants.InventoryHistoryOrderType.RECEIPT);
             inventoryHistory.setSkuId(detail.getSkuId());
             inventoryHistory.setQuantity(detail.getQuantity());
+            inventoryHistory.setGrossWeight(detail.getGrossWeight());
+            inventoryHistory.setNetWeight(detail.getNetWeight());
             inventoryHistory.setWarehouseId(detail.getWarehouseId());
             inventoryHistory.setAreaId(detail.getAreaId());
             inventoryHistory.setBatchNo(detail.getBatchNo());
@@ -168,7 +170,7 @@ public class ReceiptOrderService {
         inventoryHistoryService.saveBatch(inventoryHistoryList);
     }
 
-    private void saveInventoryDetails(ReceiptOrderBo bo){
+    private void saveInventoryDetails(ReceiptOrderBo bo) {
 
         List<InventoryDetail> inventoryDetailList = MapstructUtils.convert(bo.getDetails(), InventoryDetail.class);
 
@@ -177,12 +179,15 @@ public class ReceiptOrderService {
             inventoryDetail.setOrderNo(bo.getOrderNo());
             inventoryDetail.setType(ServiceConstants.InventoryDetailType.RECEIPT);
             inventoryDetail.setRemainQuantity(inventoryDetail.getQuantity());
+            inventoryDetail.setRemainGrossWeight(inventoryDetail.getGrossWeight());
+            inventoryDetail.setRemainNetWeight(inventoryDetail.getNetWeight());
         });
         inventoryDetailService.saveBatch(inventoryDetailList);
     }
 
     /**
      * 合并入库单详情 合并key：warehouseId_areaId_skuId
+     *
      * @param orderDetailBoList
      * @return
      */
@@ -194,12 +199,24 @@ public class ReceiptOrderService {
             if (inventoryMap.containsKey(key)) {
                 InventoryBo mergedItem = inventoryMap.get(key);
                 mergedItem.setQuantity(mergedItem.getQuantity().add(orderDetailBo.getQuantity()));
+                if (orderDetailBo.getGrossWeight() != null) {
+                    mergedItem.setGrossWeight(mergedItem.getGrossWeight().add(orderDetailBo.getGrossWeight()));
+                }
+                if (orderDetailBo.getNetWeight() != null) {
+                    mergedItem.setNetWeight(mergedItem.getNetWeight().add(orderDetailBo.getNetWeight()));
+                }
             } else {
                 InventoryBo inventory = new InventoryBo();
                 inventory.setSkuId(orderDetailBo.getSkuId());
                 inventory.setWarehouseId(orderDetailBo.getWarehouseId());
                 inventory.setAreaId(orderDetailBo.getAreaId());
                 inventory.setQuantity(orderDetailBo.getQuantity());
+                if (orderDetailBo.getGrossWeight() != null) {
+                    inventory.setGrossWeight(orderDetailBo.getGrossWeight());
+                }
+                if (orderDetailBo.getNetWeight() != null) {
+                    inventory.setNetWeight(orderDetailBo.getNetWeight());
+                }
                 inventoryMap.put(key, inventory);
             }
         });
@@ -222,6 +239,7 @@ public class ReceiptOrderService {
 
     /**
      * 入库单作废
+     *
      * @param id
      */
     public void editToInvalid(Long id) {

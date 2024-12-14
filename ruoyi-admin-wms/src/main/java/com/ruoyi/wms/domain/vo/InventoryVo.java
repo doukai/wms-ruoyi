@@ -55,6 +55,18 @@ public class InventoryVo implements Serializable {
     private BigDecimal quantity;
 
     /**
+     * 毛重(kg)
+     */
+    @ExcelProperty(value = "毛重(kg)")
+    private BigDecimal grossWeight;
+
+    /**
+     * 净重(kg)
+     */
+    @ExcelProperty(value = "净重(kg)")
+    private BigDecimal netWeight;
+
+    /**
      * 备注
      */
     @ExcelProperty(value = "备注")

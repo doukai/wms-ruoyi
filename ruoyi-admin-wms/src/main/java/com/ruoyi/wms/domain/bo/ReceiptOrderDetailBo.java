@@ -1,5 +1,6 @@
 package com.ruoyi.wms.domain.bo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -102,4 +103,11 @@ public class ReceiptOrderDetailBo extends BaseEntity {
      * 净重(kg)
      */
     private BigDecimal netWeight;
+
+
+    /**
+     * 时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
 }

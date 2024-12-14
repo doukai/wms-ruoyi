@@ -62,7 +62,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
         inventory.warehouse_id,
         inventory.sku_id,
-        sum(inventory.quantity) quantity
+        sum(inventory.quantity) quantity,
+        sum(inventory.gross_weight) gross_weight,
+        sum(inventory.net_weight) net_weight
         from wms_inventory inventory
         inner join wms_item_sku sku on inventory.sku_id=sku.id
         inner join wms_item item on sku.item_id=item.id

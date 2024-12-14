@@ -50,7 +50,7 @@ public class ShipmentOrderService {
     /**
      * 查询出库单
      */
-    public ShipmentOrderVo queryById(Long id){
+    public ShipmentOrderVo queryById(Long id) {
         ShipmentOrderVo shipmentOrderVo = shipmentOrderMapper.selectVoById(id);
         if (shipmentOrderVo == null) {
             throw new BaseException("出库单不存在");
@@ -149,6 +149,7 @@ public class ShipmentOrderService {
 
     /**
      * 出库
+     *
      * @param bo
      */
     @Transactional
@@ -167,7 +168,11 @@ public class ShipmentOrderService {
             updateByBo(bo);
         }
         // 5.更新库存：Inventory表
-        mergedInventoryBoList.forEach(mergedInventoryBo -> mergedInventoryBo.setQuantity(mergedInventoryBo.getQuantity().negate()));
+        mergedInventoryBoList.forEach(mergedInventoryBo -> {
+            mergedInventoryBo.setQuantity(mergedInventoryBo.getQuantity().negate());
+            mergedInventoryBo.setGrossWeight(mergedInventoryBo.getGrossWeight().negate());
+            mergedInventoryBo.setNetWeight(mergedInventoryBo.getNetWeight().negate());
+        });
         inventoryService.updateInventoryQuantity(mergedInventoryBoList);
         // 6.更新库存明细：InventoryHistory表
         inventoryDetailMapper.deductInventoryDetailQuantity(inventoryDetailBoList, LoginHelper.getUsername(), LocalDateTime.now());
@@ -177,6 +182,7 @@ public class ShipmentOrderService {
 
     /**
      * 按仓库库区规格合并商品明细的数量
+     *
      * @param shipmentOrderDetailBoList
      * @return
      */
@@ -187,6 +193,12 @@ public class ShipmentOrderService {
             if (mergedMap.containsKey(mergedKey)) {
                 InventoryBo mergedInventoryBo = mergedMap.get(mergedKey);
                 mergedInventoryBo.setQuantity(mergedInventoryBo.getQuantity().add(detail.getQuantity()));
+                if (detail.getGrossWeight() != null) {
+                    mergedInventoryBo.setGrossWeight(mergedInventoryBo.getGrossWeight().add(detail.getGrossWeight()));
+                }
+                if (detail.getNetWeight() != null) {
+                    mergedInventoryBo.setNetWeight(mergedInventoryBo.getNetWeight().add(detail.getNetWeight()));
+                }
                 return;
             }
             InventoryBo mergedInventoryBo = new InventoryBo();
@@ -194,6 +206,12 @@ public class ShipmentOrderService {
             mergedInventoryBo.setAreaId(detail.getAreaId());
             mergedInventoryBo.setSkuId(detail.getSkuId());
             mergedInventoryBo.setQuantity(detail.getQuantity());
+            if (detail.getGrossWeight() != null) {
+                mergedInventoryBo.setGrossWeight(detail.getGrossWeight());
+            }
+            if (detail.getNetWeight() != null) {
+                mergedInventoryBo.setNetWeight(detail.getNetWeight());
+            }
             mergedMap.put(mergedKey, mergedInventoryBo);
         });
         return new ArrayList<>(mergedMap.values());
@@ -207,11 +225,13 @@ public class ShipmentOrderService {
                 InventoryDetailBo inventoryDetailBo = new InventoryDetailBo();
                 inventoryDetailBo.setId(detail.getInventoryDetailId());
                 inventoryDetailBo.setShipmentQuantity(detail.getQuantity());
+                inventoryDetailBo.setShipmentGrossWeight(detail.getGrossWeight());
+                inventoryDetailBo.setShipmentNetWeight(detail.getNetWeight());
                 return inventoryDetailBo;
             }).toList();
     }
 
-    private void saveInventoryHistory(ShipmentOrderBo bo){
+    private void saveInventoryHistory(ShipmentOrderBo bo) {
         List<InventoryHistory> inventoryHistoryList = new LinkedList<>();
         bo.getDetails().forEach(detail -> {
             InventoryHistory inventoryHistory = new InventoryHistory();
@@ -220,6 +240,8 @@ public class ShipmentOrderService {
             inventoryHistory.setOrderType(ServiceConstants.InventoryHistoryOrderType.SHIPMENT);
             inventoryHistory.setSkuId(detail.getSkuId());
             inventoryHistory.setQuantity(detail.getQuantity().negate());
+            inventoryHistory.setGrossWeight(detail.getGrossWeight().negate());
+            inventoryHistory.setNetWeight(detail.getNetWeight().negate());
             inventoryHistory.setWarehouseId(detail.getWarehouseId());
             inventoryHistory.setAreaId(detail.getAreaId());
             inventoryHistory.setBatchNo(detail.getBatchNo());
