@@ -181,6 +181,7 @@ public class ReceiptOrderService {
             inventoryDetail.setRemainQuantity(inventoryDetail.getQuantity());
             inventoryDetail.setRemainGrossWeight(inventoryDetail.getGrossWeight());
             inventoryDetail.setRemainNetWeight(inventoryDetail.getNetWeight());
+            inventoryDetail.setReceiptOrderNo(bo.getReceiptOrderNo());
         });
         inventoryDetailService.saveBatch(inventoryDetailList);
     }

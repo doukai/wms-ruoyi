@@ -156,5 +156,9 @@ public class InventoryDetailVo extends BaseVo {
      * 净重(kg)
      */
     private BigDecimal skuNetWeight;
+    /**
+     * 入库单号
+     */
+    private String receiptOrderNo;
 
 }

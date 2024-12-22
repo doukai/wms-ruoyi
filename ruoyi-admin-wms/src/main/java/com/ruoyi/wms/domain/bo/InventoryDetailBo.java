@@ -163,5 +163,9 @@ public class InventoryDetailBo extends BaseEntity implements PlaceAndItem {
      * 出库净重(kg)
      */
     private BigDecimal shipmentNetWeight;
+    /**
+     * 入库单号
+     */
+    private String receiptOrderNo;
 
 }

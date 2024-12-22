@@ -92,4 +92,25 @@ public class ShipmentOrderDetail extends BaseEntity {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;
 
+    /**
+     * 装卸费
+     */
+    private BigDecimal loadingFee;
+    /**
+     * 操作费
+     */
+    private BigDecimal operationFee;
+    /**
+     * 仓储费
+     */
+    private BigDecimal storageFee;
+    /**
+     * 合计金额
+     */
+    private BigDecimal totalFee;
+    /**
+     * 入库单号
+     */
+    private String receiptOrderNo;
+
 }

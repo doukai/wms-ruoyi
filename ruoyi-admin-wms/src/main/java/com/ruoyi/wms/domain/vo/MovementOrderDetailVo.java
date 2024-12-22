@@ -129,4 +129,8 @@ public class MovementOrderDetailVo implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;
+    /**
+     * 入库单号
+     */
+    private String receiptOrderNo;
 }

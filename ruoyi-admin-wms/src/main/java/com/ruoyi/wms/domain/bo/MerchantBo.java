@@ -10,6 +10,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
+
 
 /**
  * 往来单位业务对象 wms_merchant
@@ -91,6 +93,18 @@ public class MerchantBo extends BaseEntity {
      * 备注
      */
     private String remark;
+    /**
+     * 装卸费
+     */
+    private BigDecimal loadingFee;
+    /**
+     * 操作费
+     */
+    private BigDecimal operationFee;
+    /**
+     * 仓储费
+     */
+    private BigDecimal storageFee;
 
 
 }

@@ -128,4 +128,8 @@ public class MovementOrderDetailBo extends BaseEntity implements PlaceAndItem {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;
+    /**
+     * 入库单号
+     */
+    private String receiptOrderNo;
 }

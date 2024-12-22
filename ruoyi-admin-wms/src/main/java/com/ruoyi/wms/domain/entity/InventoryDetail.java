@@ -109,5 +109,9 @@ public class InventoryDetail extends BaseEntity implements PlaceAndItem {
      * 剩余净重(kg)
      */
     private BigDecimal remainNetWeight;
+    /**
+     * 入库单号
+     */
+    private String receiptOrderNo;
 
 }

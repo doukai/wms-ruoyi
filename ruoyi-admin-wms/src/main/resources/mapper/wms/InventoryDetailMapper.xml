@@ -53,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
         detail.id,
         detail.receipt_order_id,
+        detail.receipt_order_no,
         detail.receipt_order_type,
         detail.order_no,
         detail.`type`,

@@ -10,6 +10,7 @@ import com.ruoyi.wms.domain.entity.Merchant;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * 往来单位视图对象 wms_merchant
@@ -67,6 +68,18 @@ public class MerchantVo implements Serializable {
      */
     @ExcelProperty(value = "备注")
     private String remark;
+    /**
+     * 装卸费
+     */
+    private BigDecimal loadingFee;
+    /**
+     * 操作费
+     */
+    private BigDecimal operationFee;
+    /**
+     * 仓储费
+     */
+    private BigDecimal storageFee;
 
 
 }

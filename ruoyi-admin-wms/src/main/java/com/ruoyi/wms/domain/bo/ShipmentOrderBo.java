@@ -101,4 +101,21 @@ public class ShipmentOrderBo extends BaseEntity {
      * 净重(kg)
      */
     private BigDecimal totalNetWeight;
+
+    /**
+     * 装卸费
+     */
+    private BigDecimal loadingFee;
+    /**
+     * 操作费
+     */
+    private BigDecimal operationFee;
+    /**
+     * 仓储费
+     */
+    private BigDecimal storageFee;
+    /**
+     * 合计金额
+     */
+    private BigDecimal totalFee;
 }
