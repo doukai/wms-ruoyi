@@ -98,33 +98,40 @@ public class ShipmentOrderVo extends BaseVo{
     /**
      * 时间
      */
+    @ExcelProperty(value = "入库时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;
 
     /**
      * 毛重(kg)
      */
+    @ExcelProperty(value = "毛重(kg)")
     private BigDecimal totalGrossWeight;
 
     /**
      * 净重(kg)
      */
+    @ExcelProperty(value = "净重(kg)")
     private BigDecimal totalNetWeight;
 
     /**
      * 装卸费
      */
+    @ExcelProperty(value = "装卸费")
     private BigDecimal loadingFee;
     /**
      * 操作费
      */
+    @ExcelProperty(value = "操作费")
     private BigDecimal operationFee;
     /**
      * 仓储费
      */
+    @ExcelProperty(value = "仓储费")
     private BigDecimal storageFee;
     /**
      * 合计金额
      */
+    @ExcelProperty(value = "合计金额")
     private BigDecimal totalFee;
 }
