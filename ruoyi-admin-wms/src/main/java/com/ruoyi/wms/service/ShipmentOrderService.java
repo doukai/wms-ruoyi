@@ -86,6 +86,9 @@ public class ShipmentOrderService {
         lqw.eq(bo.getReceivableAmount() != null, ShipmentOrder::getReceivableAmount, bo.getReceivableAmount());
         lqw.eq(bo.getTotalQuantity() != null, ShipmentOrder::getTotalQuantity, bo.getTotalQuantity());
         lqw.eq(bo.getShipmentOrderStatus() != null, ShipmentOrder::getShipmentOrderStatus, bo.getShipmentOrderStatus());
+        lqw.between(bo.getCreateStartTime() != null && bo.getCreateEndTime() != null, ShipmentOrder::getTime, bo.getCreateStartTime(), bo.getCreateEndTime());
+        lqw.ge(bo.getCreateStartTime() != null && bo.getCreateEndTime() == null, ShipmentOrder::getTime, bo.getCreateStartTime());
+        lqw.le(bo.getCreateStartTime() == null && bo.getCreateEndTime() != null, ShipmentOrder::getTime, bo.getCreateEndTime());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }

@@ -18,10 +18,7 @@ import com.ruoyi.system.service.SysDictTypeService;
 import com.ruoyi.wms.domain.bo.InventoryBo;
 import com.ruoyi.wms.domain.bo.ReceiptOrderBo;
 import com.ruoyi.wms.domain.bo.ReceiptOrderDetailBo;
-import com.ruoyi.wms.domain.entity.InventoryDetail;
-import com.ruoyi.wms.domain.entity.InventoryHistory;
-import com.ruoyi.wms.domain.entity.ReceiptOrder;
-import com.ruoyi.wms.domain.entity.ReceiptOrderDetail;
+import com.ruoyi.wms.domain.entity.*;
 import com.ruoyi.wms.domain.vo.ReceiptOrderVo;
 import com.ruoyi.wms.mapper.ReceiptOrderDetailMapper;
 import com.ruoyi.wms.mapper.ReceiptOrderMapper;
@@ -87,6 +84,9 @@ public class ReceiptOrderService {
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), ReceiptOrder::getOrderNo, bo.getOrderNo());
         lqw.eq(bo.getPayableAmount() != null, ReceiptOrder::getPayableAmount, bo.getPayableAmount());
         lqw.eq(bo.getReceiptOrderStatus() != null, ReceiptOrder::getReceiptOrderStatus, bo.getReceiptOrderStatus());
+        lqw.between(bo.getCreateStartTime() != null && bo.getCreateEndTime() != null, ReceiptOrder::getTime, bo.getCreateStartTime(), bo.getCreateEndTime());
+        lqw.ge(bo.getCreateStartTime() != null && bo.getCreateEndTime() == null, ReceiptOrder::getTime, bo.getCreateStartTime());
+        lqw.le(bo.getCreateStartTime() == null && bo.getCreateEndTime() != null, ReceiptOrder::getTime, bo.getCreateEndTime());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }

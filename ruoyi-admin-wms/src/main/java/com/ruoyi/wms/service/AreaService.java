@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class AreaService {
+public class AreaService extends ServiceImpl<AreaMapper, Area> {
 
     private final AreaMapper areaMapper;
     private final InventoryService inventoryService;

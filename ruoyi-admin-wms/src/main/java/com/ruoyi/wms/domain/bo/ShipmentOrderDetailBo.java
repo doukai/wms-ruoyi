@@ -136,5 +136,13 @@ public class ShipmentOrderDetailBo extends BaseEntity implements PlaceAndItem {
      */
     private String receiptOrderNo;
 
+    /**
+     * 出库单号
+     */
+    private String shipmentOrderNo;
+
+    private LocalDateTime createStartTime;
+    private LocalDateTime createEndTime;
+
 
 }

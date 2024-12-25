@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.wms.domain.entity.InventoryDetail;
+import com.ruoyi.wms.domain.entity.ShipmentOrder;
 import com.ruoyi.wms.domain.vo.ItemSkuVo;
 import com.ruoyi.wms.mapper.InventoryDetailMapper;
 import com.ruoyi.wms.mapper.InventoryMapper;
@@ -73,6 +74,9 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
         lqw.eq(bo.getAmount() != null, ShipmentOrderDetail::getAmount, bo.getAmount());
         lqw.eq(bo.getWarehouseId() != null, ShipmentOrderDetail::getWarehouseId, bo.getWarehouseId());
         lqw.eq(bo.getAreaId() != null, ShipmentOrderDetail::getAreaId, bo.getAreaId());
+        lqw.between(bo.getCreateStartTime() != null && bo.getCreateEndTime() != null, ShipmentOrderDetail::getTime, bo.getCreateStartTime(), bo.getCreateEndTime());
+        lqw.ge(bo.getCreateStartTime() != null && bo.getCreateEndTime() == null, ShipmentOrderDetail::getTime, bo.getCreateStartTime());
+        lqw.le(bo.getCreateStartTime() == null && bo.getCreateEndTime() != null, ShipmentOrderDetail::getTime, bo.getCreateEndTime());
         return lqw;
     }
 

@@ -107,4 +107,7 @@ public class ReceiptOrderBo extends BaseEntity {
      * 净重(kg)
      */
     private BigDecimal totalNetWeight;
+
+    private LocalDateTime createStartTime;
+    private LocalDateTime createEndTime;
 }

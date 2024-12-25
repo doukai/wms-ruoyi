@@ -9,6 +9,7 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.wms.domain.bo.ReceiptOrderDetailBo;
+import com.ruoyi.wms.domain.entity.ReceiptOrder;
 import com.ruoyi.wms.domain.vo.ItemSkuVo;
 import com.ruoyi.wms.mapper.ReceiptOrderDetailMapper;
 import jakarta.validation.constraints.NotNull;
@@ -38,7 +39,7 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
     /**
      * 查询入库单详情
      */
-    public ReceiptOrderDetailVo queryById(Long id){
+    public ReceiptOrderDetailVo queryById(Long id) {
         return receiptOrderDetailMapper.selectVoById(id);
     }
 
@@ -68,6 +69,9 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
         lqw.eq(bo.getAmount() != null, ReceiptOrderDetail::getAmount, bo.getAmount());
         lqw.eq(bo.getWarehouseId() != null, ReceiptOrderDetail::getWarehouseId, bo.getWarehouseId());
         lqw.eq(bo.getAreaId() != null, ReceiptOrderDetail::getAreaId, bo.getAreaId());
+        lqw.between(bo.getCreateStartTime() != null && bo.getCreateEndTime() != null, ReceiptOrderDetail::getTime, bo.getCreateStartTime(), bo.getCreateEndTime());
+        lqw.ge(bo.getCreateStartTime() != null && bo.getCreateEndTime() == null, ReceiptOrderDetail::getTime, bo.getCreateStartTime());
+        lqw.le(bo.getCreateStartTime() == null && bo.getCreateEndTime() != null, ReceiptOrderDetail::getTime, bo.getCreateEndTime());
         return lqw;
     }
 

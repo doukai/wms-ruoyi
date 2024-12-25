@@ -118,4 +118,7 @@ public class ShipmentOrderBo extends BaseEntity {
      * 合计金额
      */
     private BigDecimal totalFee;
+
+    private LocalDateTime createStartTime;
+    private LocalDateTime createEndTime;
 }

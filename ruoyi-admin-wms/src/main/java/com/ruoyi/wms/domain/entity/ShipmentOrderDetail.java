@@ -113,4 +113,9 @@ public class ShipmentOrderDetail extends BaseEntity {
      */
     private String receiptOrderNo;
 
+    /**
+     * 出库单号
+     */
+    private String shipmentOrderNo;
+
 }

@@ -12,8 +12,12 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.wms.domain.bo.ReceiptOrderDetailBo;
+import com.ruoyi.wms.domain.entity.Area;
+import com.ruoyi.wms.domain.entity.Warehouse;
 import com.ruoyi.wms.domain.vo.ReceiptOrderDetailVo;
+import com.ruoyi.wms.service.AreaService;
 import com.ruoyi.wms.service.ReceiptOrderDetailService;
+import com.ruoyi.wms.service.WarehouseService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 入库单详情
@@ -36,6 +41,10 @@ import java.util.List;
 public class ReceiptOrderDetailController extends BaseController {
 
     private final ReceiptOrderDetailService receiptOrderDetailService;
+
+    private final WarehouseService warehouseService;
+
+    private final AreaService areaService;
 
     /**
      * 查询入库单详情列表
@@ -53,8 +62,36 @@ public class ReceiptOrderDetailController extends BaseController {
     @Log(title = "入库单详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ReceiptOrderDetailBo bo, HttpServletResponse response) {
-        List<ReceiptOrderDetailVo> list = receiptOrderDetailService.queryList(bo);
-        ExcelUtil.exportExcel(list, "入库单详情", ReceiptOrderDetailVo.class, response);
+        List<ReceiptOrderDetailVo> receiptOrderDetailVos = receiptOrderDetailService.queryList(bo);
+
+        List<Long> warehouseIdList = receiptOrderDetailVos.stream()
+            .map(ReceiptOrderDetailVo::getWarehouseId)
+            .filter(Objects::nonNull)
+            .toList();
+        List<Warehouse> warehouseList = warehouseService.listByIds(warehouseIdList);
+        receiptOrderDetailVos.stream()
+            .filter(receiptOrderDetailVo -> receiptOrderDetailVo.getWarehouseId() != null)
+            .forEach(receiptOrderDetailVo ->
+                warehouseList.stream()
+                    .filter(warehouse -> warehouse.getId().equals(receiptOrderDetailVo.getWarehouseId()))
+                    .findFirst()
+                    .ifPresent(warehouse -> receiptOrderDetailVo.setWarehouse(warehouse.getWarehouseName()))
+            );
+
+        List<Long> areaIdList = receiptOrderDetailVos.stream()
+            .map(ReceiptOrderDetailVo::getAreaId)
+            .filter(Objects::nonNull)
+            .toList();
+        List<Area> areaList = areaService.listByIds(areaIdList);
+        receiptOrderDetailVos.stream()
+            .filter(receiptOrderDetailVo -> receiptOrderDetailVo.getAreaId() != null)
+            .forEach(receiptOrderDetailVo ->
+                areaList.stream()
+                    .filter(area -> area.getId().equals(receiptOrderDetailVo.getAreaId()))
+                    .findFirst()
+                    .ifPresent(area -> receiptOrderDetailVo.setArea(area.getAreaName()))
+            );
+        ExcelUtil.exportExcel(receiptOrderDetailVos, "入库单详情", ReceiptOrderDetailVo.class, response);
     }
 
     /**
@@ -65,7 +102,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/{id}")
     public R<ReceiptOrderDetailVo> getInfo(@NotNull(message = "主键不能为空")
-                                     @PathVariable Long id) {
+                                           @PathVariable Long id) {
         return R.ok(receiptOrderDetailService.queryById(id));
     }
 

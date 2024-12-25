@@ -115,4 +115,7 @@ public class ReceiptOrderDetailBo extends BaseEntity {
      * 入库单号
      */
     private String receiptOrderNo;
+
+    private LocalDateTime createStartTime;
+    private LocalDateTime createEndTime;
 }
